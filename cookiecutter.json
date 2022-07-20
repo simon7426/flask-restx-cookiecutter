@@ -1,0 +1,25 @@
+{
+    "repo_name": "your-repo-name",
+    "repo_description": "your-repo-description",
+    "app_name": "project",
+    "author_name": "your-name",
+    "author_email": "your-email@example.com",
+    "license": "MIT",
+    "python_version": [
+        "3.8",
+        "3.10"
+    ],
+    "use_cors": [
+        "yes",
+        "no"
+    ],
+    "use_postgres": [
+        "yes",
+        "no"
+    ],
+    "use_mongo": [
+        "yes",
+        "no"
+    ]
+ 
+}

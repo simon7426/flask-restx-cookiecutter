@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "{{cookiecutter.repo_name}}"
+version = "0.1.0"
+description = "{{cookiecutter.repo_description}}"
+authors = ["{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>"]
+license = "{{cookiecutter.license}}"
+
+[tool.poetry.dependencies]
+python = "^{{cookiecutter.python_version}}"
+Flask = "^2.0.2"
+flask-restx = "^0.5.1"
+{%- if cookiecutter.use_cors == "yes" %}
+Flask-Cors = "^3.0.10"
+{%- endif %}
+{%- if cookiecutter.use_postgres == "yes" %}
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Migrate = "^3.1.0"
+psycopg2-binary = "^2.9.2"
+{%- endif %}
+{%- if cookiecutter.use_mongo == "yes" %}
+Flask-PyMongo = "^2.3.0"
+{%- endif %}
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+flake8 = "^4.0.1"
+black = "^21.12b0"
+isort = "^5.10.1"
+tox = "^3.24.4"
+bandit = "^1.7.1"
+safety = "^2.1.1"
+pre-commit = "^2.20.0"
+
+[tool.pytest.ini_options]
+addopts = "-p no:warnings"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
