@@ -1,10 +1,21 @@
 import os
 
 from flask import Flask
+{%- if cookiecutter.use_cors == "yes" %}
 from flask_cors import CORS
+{%- endif %}
+{%- if cookiecutter.use_postgres == "yes" %}
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+{%- endif %}
+{%- if cookiecutter.use_mongo == "yes" %}
 from flask_pymongo import PyMongo
+{%- endif %}
+{%- if cookiecutter.use_celery == "yes" %}
+from flask_celeryext import FlaskCeleryExt
+from {{cookiecutter.app_name}}.celery_utils import make_celery
+{%- endif %}
+
 
 {%- if cookiecutter.use_cors == "yes" %}
 cors = CORS()
@@ -16,7 +27,9 @@ migrate = Migrate()
 {%- if cookiecutter.use_mongo == "yes" %}
 mongo = PyMongo()
 {%- endif %}
-
+{%- if cookiecutter.use_celery == "yes" %}
+ext_celery = FlaskCeleryExt(create_celery_app=make_celery)
+{%- endif %}
 
 
 def create_app():
@@ -35,6 +48,9 @@ def create_app():
 {%- if cookiecutter.use_mongo == "yes" %}
     mongo.init_app(app)
 {%- endif %}
+{%- if cookiecutter.use_celery == "yes" %}
+    ext_celery.init_app(app)
+{%- endif %}
 
     from {{cookiecutter.app_name}}.apis import api
 
@@ -42,6 +58,10 @@ def create_app():
 
     @app.shell_context_processor
     def ctx():  # pragma: no cover
+{%- if cookiecutter.use_postgres == "yes" %}
         return {"app": app, "db": db}
+{%- else %}
+        return {"app": app}
+{%- endif %}
 
     return app

@@ -1,13 +1,53 @@
-FROM python:{{cookiecutter.python_version}}-slim-buster
-RUN mkdir -p /home/app && addgroup app && useradd -d /home/app -g app app && chown app:app /home/app
-RUN apt-get update && apt-get install -y curl
-USER app
-WORKDIR /home/app
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH=/home/gitlab/.poetry/bin:$PATH
-ENV FLAKS_ENV=development
-RUN poetry config virtualenvs.in-project true
-COPY ./pyproject.toml .
-COPY ./poetry.lock .
-RUN poetry install --no-dev
+###########
+# Builder #
+###########
+
+# Pull ofiicial base image
+FROM python:{{cookiecutter.python_version}}-slim-buster as builder
+
+# set working directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+# lint
+RUN pip install black==22.3.0 flake8===4.0.1 isort==5.10.1
 COPY . .
+RUN flake8 project
+RUN black project --check --quiet
+RUN isort project --profile black --check-only
+
+###############
+# Final Stage #
+###############
+
+# official base image
+FROM python:{{cookiecutter.python_version}}-slim-buster
+
+# set working directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV FLASK_ENV production
+ENV APP_SETTINGS project.config.ProductionConfig
+
+# install dependencies
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+# add app
+COPY . .
+
+# run gunicorn
+CMD gunicorn project.wsgi:app -k eventlet -w 1 --bind 0.0.0.0:8000

@@ -1,25 +1,13 @@
 {
-    "repo_name": "your-repo-name",
-    "repo_description": "your-repo-description",
-    "app_name": "project",
-    "author_name": "your-name",
-    "author_email": "your-email@example.com",
-    "license": "MIT",
-    "python_version": [
-        "3.8",
-        "3.10"
-    ],
-    "use_cors": [
-        "yes",
-        "no"
-    ],
-    "use_postgres": [
-        "yes",
-        "no"
-    ],
-    "use_mongo": [
-        "yes",
-        "no"
-    ]
- 
+  "repo_name": "sample-repo",
+  "repo_description": "sample-repo-description",
+  "app_name": "project",
+  "author_name": "sample-name",
+  "author_email": "sample-email@example.com",
+  "license": "MIT",
+  "python_version": ["3.8", "3.10"],
+  "use_cors": ["yes", "no"],
+  "use_postgres": ["yes", "no"],
+  "use_mongo": ["yes", "no"],
+  "use_celery": ["yes", "no"]
 }

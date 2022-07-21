@@ -12,6 +12,18 @@ class BaseConfig:
 {%- if cookiecutter.use_mongo == "yes" %}
     MONGO_URI = os.environ.get("MONGO_URI")
 {%- endif %}
+{%- if cookiecutter.use_celery == "yes" %}
+    CELERY_BROKER_URL = os.environ.get(
+        "CELERY_BROKER_URL"
+    )
+    CELERY_RESULT_BACKEND = os.environ.get(
+        "CELERY_RESULT_BACKEND"
+    )
+    CELERY_TASK_DEFAULT_QUEUE = "{{cookiecutter.app_name}}_default_queue"
+
+    CELERY_TASK_CREATE_MISSING_QUEUES = False
+{%- endif %}
+
 
 class DevelopmentConfig(BaseConfig):
     pass

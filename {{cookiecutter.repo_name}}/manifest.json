@@ -1,0 +1,14 @@
+{
+  "features": [
+    {
+      "name": "celery",
+      "status": "{{cookiecutter.use_celery}}",
+      "resources": [
+        "./celery_app.py",
+        "./{{cookiecutter.app_name}}/celery_utils.py",
+        "./{{cookiecutter.app_name}}/apis/alive/tasks.py",
+        "./tests/test_celery_alive.py"
+      ]
+    }
+  ]
+}

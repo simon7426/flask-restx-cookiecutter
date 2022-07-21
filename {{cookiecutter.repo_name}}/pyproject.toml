@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "{{cookiecutter.repo_description}}"
 authors = ["{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>"]
 license = "{{cookiecutter.license}}"
+packages = [
+    { include = "{{cookiecutter.app_name}}" }
+]
 
 [tool.poetry.dependencies]
 python = "^{{cookiecutter.python_version}}"
@@ -21,12 +24,18 @@ psycopg2-binary = "^2.9.2"
 Flask-PyMongo = "^2.3.0"
 {%- endif %}
 gunicorn = "^20.1.0"
+{%- if cookiecutter.use_celery == "yes" %}
+celery = "^5.2.3"
+Flask-CeleryExt = "^0.3.4"
+redis = "^4.3.4"
+watchgod = "^0.7"
+{%- endif %}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 flake8 = "^4.0.1"
-black = "^21.12b0"
+black = "^22.3.0"
 isort = "^5.10.1"
 tox = "^3.24.4"
 bandit = "^1.7.1"
