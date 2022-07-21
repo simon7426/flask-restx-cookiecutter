@@ -8,7 +8,6 @@ MANIFEST = "manifest.json"
 def delete_resources_for_disabled_features():
     with open(MANIFEST) as manifest_file:
         manifest = json.load(manifest_file)
-        print(manifest)
         for feature in manifest['features']:
             if not feature['status']=="yes":
                 print(f"removing resources for disabled feature {feature['name']}...")
