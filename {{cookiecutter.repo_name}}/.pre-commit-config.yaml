@@ -50,3 +50,7 @@ repos:
     rev: v1.2.4
     hooks:
       - id: python-safety-dependencies-check
+
+default_stages:
+  - commit
+  - push

@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource
+{%- if cookiecutter.use_celery == "yes" %}
 from {{cookiecutter.app_name}}.apis.alive.tasks import test_celery
+{%- endif %}
 
 alive_namespace = Namespace("alive")
 
